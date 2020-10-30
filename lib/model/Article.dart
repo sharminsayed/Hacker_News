@@ -1,5 +1,5 @@
 
-class TopStories {
+class Article {
   String by;
   int descendants;
   int id;
@@ -10,7 +10,10 @@ class TopStories {
   String type;
   String url;
 
-  TopStories.fromJsonMap(Map<String, dynamic> map):
+  Article.fromJsonMap(Map<String, dynamic> map):
+  /*
+	 * Mapping json data to article object
+	 * */
         by = map["by"]==null?null:map["by"],
         descendants = map["descendants"]==null?null:map["descendants"],
         id = map["id"]==null?null:map["id"],
@@ -22,6 +25,9 @@ class TopStories {
         url = map["url"]==null?null:map["url"];
 
   Map<String, dynamic> toJson() {
+    /*
+	 * Convert article object to json data
+	 * */
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['by'] = by;
     data['descendants'] = descendants;

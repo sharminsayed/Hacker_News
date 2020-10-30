@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hacker_news/model/TopStories.dart';
+import 'package:flutter_hacker_news/utils/DateUtils.dart';
+
+import 'package:flutter_hacker_news/model/Article.dart';
 import 'package:flutter_hacker_news/service/Network.dart';
 import 'package:flutter_hacker_news/ui/DetailsPage.dart';
 import 'package:animated_card/animated_card.dart';
-import 'package:date_format/date_format.dart';
 
 class HomePage extends StatefulWidget {
-  // var id;
-  //
-  // HomePage2(this.id);
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  List<TopStories> _topstorieslist;
-  bool _loading;
-  var id;
+  List<Article> _topstorieslist; //A list of item contains topstories
+  bool _loading; //For text loading view
 
   @override
   void initState() {
     super.initState();
     _loading = true;
-    List<TopStories> topstorieslist = new List<TopStories>();
+
+    List<Article> topstorieslist = new List<Article>();
     for (int i = 0; i < Network.topstories.length; i++) {
-      Network.getArticleDetails(Network.topstories[i]).then((stories) {
-        // print("need print "+id);
+      //Get Article  From TopStories List
+
+      Network.getArticle(Network.topstories[i]).then((stories) {
         setState(() {
           if (stories != null) {
             topstorieslist.add(stories);
@@ -44,7 +42,8 @@ class _HomePageState extends State<HomePage> {
     const curveHeight = 50.0;
     return Scaffold(
         body: NestedScrollView(
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
                   shape: const MyShapeBorder(curveHeight),
@@ -69,40 +68,45 @@ class _HomePageState extends State<HomePage> {
             body: ListView(children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width * 0.65,
+                // Building Listview with previously fetched topstories
                 child: ListView.builder(
                     physics: ClampingScrollPhysics(),
                     shrinkWrap: true,
                     itemCount:
                         null == _topstorieslist ? 0 : _topstorieslist.length,
                     itemBuilder: (BuildContext context, int index) {
-                      TopStories topStories = _topstorieslist[index];
+                      Article topStories = _topstorieslist[index];
 
-                      /// print("agdumbagdum" + topStories.toString());
                       return AnimatedCard(
                         direction: AnimatedCardDirection.left,
                         //Initial animation direction
                         initDelay: Duration(milliseconds: 0),
                         //Delay to initial animation
                         duration: Duration(seconds: 1),
-                        //Initial animation duration//Implement this action to active dismiss
+                        //Initial animation duration
                         curve: Curves.bounceOut,
                         child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Card(
                               color: Colors.amber,
+                              //initial elevation of card
                               elevation: 5,
+
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
+
+                              //for implement onTap in card
                               child: InkWell(
                                 splashColor: Colors.amberAccent.withAlpha(50),
                                 onTap: () {
                                   Route route = MaterialPageRoute(
                                       builder: (context) =>
                                           NewsShowPage(topStories.id));
+
                                   Navigator.push(context, route);
-                                  print(topStories.id);
                                 },
+                                //for implement card view credentilal
                                 child: Container(
                                     child: Column(
                                   children: <Widget>[
@@ -133,12 +137,12 @@ class _HomePageState extends State<HomePage> {
                                             width: 100,
                                           ),
                                           Row(
-
                                             children: <Widget>[
                                               Icon(Icons.timer),
-
-                                              Text((topStories != null
-                                                    ? topStories.time.toString()
+                                              Text(
+                                                (topStories != null
+                                                    ? DateUtils.DateFormate(
+                                                        topStories.time)
                                                     : 'time'),
                                                 textAlign: TextAlign.center,
                                               ),
@@ -293,6 +297,11 @@ class _HomePageState extends State<HomePage> {
 }
 
 class MyShapeBorder extends ContinuousRectangleBorder {
+  /*
+    * This function converts shape appbar.
+    * @param rect: for size
+    * @param textDirection: for directon of curve
+    * */
   const MyShapeBorder(this.curveHeight);
 
   final double curveHeight;

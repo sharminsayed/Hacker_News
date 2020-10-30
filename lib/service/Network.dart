@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_hacker_news/model/Comment.dart';
-import 'package:flutter_hacker_news/model/TopStories.dart';
+import 'package:flutter_hacker_news/model/Article.dart';
 import 'package:http/http.dart' as http;
 
 class Network {
@@ -32,34 +32,25 @@ class Network {
     24917752,
     24917107
   ];
+
+  // Base_url for API
   static const String Base_url = "https://hacker-news.firebaseio.com/v0";
 
-  // static Future<List<TopStories>> getFeature() async {
-  //   List<TopStories> topstorieslist = new List<TopStories>();
-  //   for (int i = 0; i < topstories.length; i++) {
-  //     String url = Base_url + "/item/" + topstories[i].toString() + ".json";
-  //     try {
-  //       final response = await http.get(url);
-  //       if (200 == response.statusCode) {
-  //         final jsonResponse = json.decode(response.body);
-  //         print(response.body);
-  //         TopStories topStories = new TopStories.fromJsonMap(jsonResponse);
-  //         topstorieslist.add(topStories);
-  //       }
-  //     } catch (e) {
-  //       print(e.toString());
-  //     }
-  //   }
-  //   return topstorieslist;
-  // }
 
-  static Future<TopStories> getArticleDetails(int id) async {
+
+  static Future<Article> getArticle(int id) async {
+    /*
+    * This function retrieves Article from API using network connectivity.
+    *  @param id: int variable contains id of article
+    * @return Article: An object of Article class fetched from API.
+    * */
+
     String url = Base_url + "/item/" + id.toString() + ".json";
     try {
       final response = await http.get(url);
       if (200 == response.statusCode) {
         final jsonResponse = json.decode(response.body);
-        TopStories topStories = new TopStories.fromJsonMap(jsonResponse);
+        Article topStories = new Article.fromJsonMap(jsonResponse);
         return topStories;
       } else {
         return null;
@@ -70,6 +61,11 @@ class Network {
   }
 
   static Future<Comment> getComment(int id) async {
+    /*
+    * This function retrieves Comment from API using network connectivity.
+    *  @param id: int variable contains id of comment
+    * @return Comment: An object of Comment class fetched from API.
+    * */
     String url = Base_url + "/item/" + id.toString() + ".json";
     try {
       final response = await http.get(url);

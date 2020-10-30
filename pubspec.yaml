@@ -30,9 +30,7 @@ dependencies:
   cupertino_icons: ^0.1.3
   http:
   basic_utils:
-  shared_preferences:
   shimmer: ^1.0.1
-  date_format: ^1.0.9
   tabbar: ^0.1.1
   animated_card: ^1.0.0+8
   intl: ^0.16.1
