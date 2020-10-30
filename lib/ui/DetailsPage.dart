@@ -253,7 +253,7 @@ class _NewsShowPage extends State<NewsShowPage> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
-                      trailing: Icon(Icons.more_vert),
+                      trailing: Icon(Icons.keyboard_arrow_down),
                       children: <Widget>[
                         new Column(
                           children: _newchildbuilder(
@@ -274,11 +274,13 @@ class _NewsShowPage extends State<NewsShowPage> {
     return formattedDate.toString();
   }
 
-  //this function is for removing html tag
+
   String _parseHtmlString(String htmlString) {
+
+   // This function remove html tag.
+
     final document = parse(htmlString);
     final String parsedString = parse(document.body.text).documentElement.text;
-
     return parsedString;
   }
 
@@ -300,7 +302,9 @@ class _NewsShowPage extends State<NewsShowPage> {
     }
     for (Comment comment in subList) {
       columnContent.add(new ListTile(
-        title: new Text(comment.text),
+        leading: CircleAvatar(),
+        title: new Text(comment.by),
+        subtitle: new Text(_parseHtmlString(comment.text)),
       ));
     }
     return columnContent;
