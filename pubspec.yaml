@@ -36,10 +36,7 @@ dependencies:
   intl: ^0.16.1
   webview_flutter: ^1.0.5
   html: ^0.14.0+4
-  flutter_inappwebview:
-    git:
-      url: https://github.com/pichillilorenzo/flutter_inappwebview.git
-      ref: master
+
 
 
 
